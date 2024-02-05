@@ -7,6 +7,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup, updateProfile } from "fir
 import { app } from "../../../Firebase-config";
 import { Authcontext } from "../../AuthProviders/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 const Login = () => {
     const [register, setRegister] = useState(false);
 
@@ -63,35 +64,17 @@ const Login = () => {
 
         const date = new Date();
         const day = date.getDate();
-        const month = date.getFullMonth();
+        const month = date.getMonth();
         const year =date.getFullYear();
-        const currentDate = `${day} ${month} ${year}`
+        const currentDate = `${day},${month},${year}`
         const propertyData = {email,currentDate};
         console.log(propertyData);
 
 
-        fetch("http://localhost:5000/users",{
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(propertyData),
+        axios.post("http://localhost:5000/users",propertyData)
+        .then(({data})=>{
+        console.log(data)
             })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data.insertedId) {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "user added successfully.",
-                        icon: "success",
-                        confirmButtonText: "cool",
-                    });
-                }
-            })
-            .catch((error) => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
     } 
     
 

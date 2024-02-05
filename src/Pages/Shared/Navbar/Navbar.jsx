@@ -10,7 +10,7 @@ import { IoIosLogOut } from "react-icons/io";
 const Navbar = () => {
     const { user, logout  } = useContext(Authcontext)
     const userName = user ? user.displayName : ""
-    const firstName = userName.split(" ")[0]
+    const firstName = userName?.split(" ")[0]
     const photo =user?.photoURL;
 
     const handleLogout = () => {

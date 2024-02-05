@@ -27,8 +27,8 @@ const Navbar = () => {
             {/* Route section */}
             <div>
                 <ul>
-                    <li><NavLink><span><FaHome/> <span>Home</span></span></NavLink></li>
-                    <li><NavLink><span><FaUsersCog/> <span>Manage User</span></span></NavLink></li>
+                    <li><NavLink to={'/'}><span><FaHome/> <span>Home</span></span></NavLink></li>
+                    <li><NavLink to={'/manageuser'}><span><FaUsersCog/> <span>Manage User</span></span></NavLink></li>
                 </ul>
             </div>
 

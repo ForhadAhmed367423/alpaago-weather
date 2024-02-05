@@ -1,6 +1,35 @@
 import { AiFillDelete } from "react-icons/ai";
+import useAxiosUser from "../../Hooks/useAxiosUser";
+import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const ManageUser = () => {
+    const [FirstData,refetch] = useAxiosUser();
+    const axiosPublic = useAxiosPublic()
+
+    const deleteUser = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure you want to delete this account?",
+                showDenyButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: "No"
+            });
+    
+            if (result.isConfirmed) {
+                await axiosPublic.delete(`/users?id=${id}`);
+                alert("User deleted");
+                refetch();
+            } else if (result.isDenied) {
+                return;
+            }
+        } catch (error) {
+            console.error("Error while deleting user:", error);
+        }
+    
+        
+
+    }
     return (
         <div className="w-[600px] mx-auto">
             <div className="container p-2 mx-auto sm:p-4 dark:text-gray-100">
@@ -16,38 +45,45 @@ const ManageUser = () => {
 			</colgroup>
 			<thead className="dark:bg-gray-700">
 				<tr className="text-left">
-					<th className="p-3">Name</th>
+					<th className="p-3">Email</th>
 					<th className="p-3">Date</th>
 					<th className="p-3">Status</th>
                     <th className="p-4">Action</th>
 				</tr>
 			</thead>
-			<tbody>
+			{
+                FirstData.map(users=>(
+                    <tbody key={users._id}>
 				
 				<tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
 					
-					<td className="p-3">
-						<p>01 Feb 2022</p>
-						<p className="dark:text-gray-400">Tuesday</p>
-					</td>
+					
 					<td className="">
-						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
-							<span>Pending</span>
+						<span className="px-3 py-1 font-semibold  dark:text-white">
+							<span>{users?.email}</span>
 						</span>
 					</td>
+
+                    <td className="p-3">
+						<p>{users?.currentDate}</p>
+						
+					</td>
+
 					<td className="">
-						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
-							<span>Pending</span>
+						<span className="px-3 py-1 font-semibold dark:text-white">
+							<span>{users?.status}</span>
 						</span>
 					</td>
                     <td className="p-3">
 						<span className=" p-4 py-1 font-semibold text-center flex items-center dark:bg-red-400 dark:text-white rounded-sm ">
-							<span className="flex items-center text-center" >Delete <AiFillDelete/></span>
+							<button onClick={() => deleteUser(users?._id)}  className="flex items-center text-center" >Delete <AiFillDelete/></button>
 						</span>
 					</td>
                     
 				</tr>
 			</tbody>
+                ))
+            }
 		</table>
 	</div>
 </div>

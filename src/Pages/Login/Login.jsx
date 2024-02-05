@@ -67,7 +67,8 @@ const Login = () => {
         const month = date.getMonth();
         const year =date.getFullYear();
         const currentDate = `${day},${month},${year}`
-        const propertyData = {email,currentDate};
+        const status = 'active'
+        const propertyData = {email,currentDate,status};
         console.log(propertyData);
 
 

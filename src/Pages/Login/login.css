@@ -1,0 +1,6 @@
+.login{
+    backdrop-filter: blur(5px);
+    background: linear-gradient(#ffffff24,#89898950);
+    border-radius: 5px;
+    
+}

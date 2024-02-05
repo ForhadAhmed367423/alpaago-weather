@@ -1,0 +1,17 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+  padding: 0;
+  margin: 0;
+  font-family: 'League Spartan', sans-serif;
+  
+}
+
+#root{
+  background: linear-gradient(187deg,#1d3557 35%,#457b9d);
+  min-height: 100vh;
+}

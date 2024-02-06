@@ -2,10 +2,24 @@ import { AiFillDelete } from "react-icons/ai";
 import useAxiosUser from "../../Hooks/useAxiosUser";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const ManageUser = () => {
-    const [FirstData,refetch] = useAxiosUser();
+    const [FirstData,refresh] = useAxiosUser();
     const axiosPublic = useAxiosPublic()
+	const [status, setStatus] = useState("")
+
+	const { data = [], refetch } = useQuery({
+        queryKey: ["userData", status],
+        queryFn: async () => {
+            const { data: Users } = await axiosPublic.get(`https://weather-alpaago-server.vercel.app/users?status=${status}`)
+            return Users;
+			
+			
+        }
+    })
+
 
     const deleteUser = async (id) => {
         try {
@@ -30,6 +44,30 @@ const ManageUser = () => {
         
 
     }
+
+
+	const hanldeChangeStatus = async (status, id) => {
+
+        if (status === "active") {
+            await axiosPublic.put(`/users/status?id=${id}&&status=${"inactive"}`)
+            alert("Status update successfully")
+            refresh()
+        }
+
+        if (status === "inactive") {
+            await axiosPublic.put(`/users/status?id=${id}&&status=${"active"}`)
+            alert("Status update successfully")
+            refresh()
+        }
+
+        else {
+            return;
+        }
+
+
+    }
+
+
     return (
         <div className="w-[600px] mx-auto">
             <div className="container p-2 mx-auto sm:p-4 dark:text-gray-100">
@@ -71,7 +109,7 @@ const ManageUser = () => {
 
 					<td className="">
 						<span className="px-3 py-1 font-semibold dark:text-white">
-							<span>{users?.status}</span>
+						<button style={{ color: users?.status === "active" ? "#12b712" : "red" }} onClick={() => hanldeChangeStatus(users?.status, users?._id)}><span>{users?.status}</span></button>
 						</span>
 					</td>
                     <td className="p-3">

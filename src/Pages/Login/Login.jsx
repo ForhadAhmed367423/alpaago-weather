@@ -72,7 +72,7 @@ const Login = () => {
         console.log(propertyData);
 
 
-        axios.post("http://localhost:5000/users",propertyData)
+        axios.post("https://weather-alpaago-server.vercel.app/users",propertyData)
         .then(({data})=>{
         console.log(data)
             })
